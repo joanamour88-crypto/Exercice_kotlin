@@ -90,6 +90,35 @@ data class Fraction(val numerateur: Int, val denominateur: Int = 1) {
     override fun toString(): String = "$numerateur/$denominateur"
 }
 
+//////////////////////////////////// Exercice 8.19.1 ////////////////////////////////////////
+data class MaterielInformatique(val designation: String, val numeroSerie: String) {
+
+}
+data class CaisseBoisson(val appellation: String, val volumeLitres: Double) {
+
+}
+class Conteneur<T>(val contenu: T, val poidsInitial: Double) {
+    init{
+        require(poidsInitial > 0) {"le poids initial doit être supérieur à 0"}
+    }
+
+    var poids: Double = poidsInitial
+        get() = field
+        private set (valeur){
+            if (valeur < 0){
+                field = 0.0
+            }
+        }
+
+    fun ajouterPoids(poidsajoute: Double){
+        if (poids > 0){
+            poids = poidsInitial + poidsajoute
+        } else {
+
+        }
+    }
+}
+
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
@@ -205,8 +234,8 @@ fun main(){
     //////////////////////////////////// Exercice 8.17.4 /////////////////////////////////////////
     val andromede = ObjetMessier(31, "Andromede", "galaxie")
     andromede.magnitudeApparente = 3.4
-    println(andromede)*/
-
+    println(andromede)
+    */
     //////////////////////////////////// Exercice 8.17.5 ////////////////////////////////////////
     val a = Fraction(1,2) // dénomitateur à 1 par défaut
     val b = Fraction(1,3)
