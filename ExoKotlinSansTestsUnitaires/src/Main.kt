@@ -91,33 +91,97 @@ data class Fraction(val numerateur: Int, val denominateur: Int = 1) {
 }
 
 //////////////////////////////////// Exercice 8.19.1 ////////////////////////////////////////
-data class MaterielInformatique(val designation: String, val numeroSerie: String) {
-
+data class MaterielInformatique(val designation: String, val assembleur: String) {
+    override fun toString(): String = "(designation -> ${designation} et numero de serie -> ${assembleur})"
 }
 data class CaisseBoisson(val appellation: String, val volumeLitres: Double) {
-
+    override fun toString(): String = "appellation -> ${appellation} et volume par litres -> ${volumeLitres}"
 }
 class Conteneur<T>(val contenu: T, val poidsInitial: Double) {
     init{
-        require(poidsInitial > 0) {"le poids initial doit être supérieur à 0"}
+        require(poidsInitial >= 0.0) {"le poids initial doit être supérieur à 0"}
     }
 
     var poids: Double = poidsInitial
-        get() = field
         private set (valeur){
-            if (valeur < 0){
-                field = 0.0
+            if (valeur > 0){
+                field = valeur
             }
         }
 
     fun ajouterPoids(poidsajoute: Double){
-        if (poids > 0){
+        if (poids >= 0){
             poids = poidsInitial + poidsajoute
         } else {
+            throw Exception("Le poids doit être supérieur a zéro")
+        }
+    }
+    override fun toString(): String = "Etat Initial : " + contenu.toString() + ", Poids total : ${poids} t"
+}
+//////////////////////////////////// Exercice 9.8.1 ////////////////////////////////////////
+interface IDocument{
+    val titre: String
+    val auteur: String
+    val editeur: String
+    val dateParution: String
 
+    fun AfficherDetail(){
+    }
+}
+
+open class Bibliotheque<IDocument>{
+    val catalogue = ArrayList<IDocument>()
+
+    fun ajouterDocument(doc: IDocument){
+        catalogue.add(doc)
+    }
+
+    fun afficherTout(){
+        for( doc in catalogue){
+            println(doc.)
         }
     }
 }
+
+class Livre(
+    override val titre: String,
+    override val auteur: String,
+    override val editeur: String,
+    override val dateParution: String,
+    val quatriemeDeCouverture: String,
+    val nombreDePage: Int
+    ) : IDocument {
+    override fun AfficherDetail() {
+        println("ce livre a pour titre : $titre, écrit par $auteur, éditer par $editeur et est parue en $dateParution. Voici le résumer: $quatriemeDeCouverture et il y a $nombreDePage pages")
+    }
+}
+class photo(
+    override val titre: String,
+    override val auteur: String,
+    override val editeur: String,
+    override val dateParution: String,
+    val resolutionHorizontale: Int,
+    val resolutionverticales: Int,
+    val estCouleur: Boolean
+    ) : IDocument{
+    override fun AfficherDetail() {
+        println("cette photo a pour titre : $titre, photographier par $auteur, éditer par $editeur et est publié en $dateParution. La photo a pour resolution horizontale : $resolutionHorizontale et resolution verticale: $resolutionverticales. en couleur: $estCouleur")
+    }
+}
+//////////////////////////////////// Exercice 9.8.1bis ////////////////////////////////////////
+/*sealed class IDocument(val titre: String, val auteur: String, val editeur: String, val dateParution: String){
+    class livre(
+        titre: String,
+        auteur: String,
+        editeur: String,
+        dateParution: String,
+        val quatriemeDeCouverture: String,
+        val nombrePages: Int
+    ) : IDocument(titre, editeur, editeur, dateParution)
+    class photo(
+
+    )
+}*/
 
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
@@ -129,7 +193,7 @@ fun main(){
     print("Votre âge ?")
     val age1 = readlnOrNull()?.toIntOrNull() ?: 18
     println("Age retenu : $age1")
-
+       PAPAYOU PAPAYOU PAÄYOU LELEEEEEE
     //////////////////////////////////// Exercice 4.3.1 /////////////////////////////////////////
     print("Nombre ?")
     val nombre = readlnOrNull()?.toIntOrNull()
@@ -235,12 +299,23 @@ fun main(){
     val andromede = ObjetMessier(31, "Andromede", "galaxie")
     andromede.magnitudeApparente = 3.4
     println(andromede)
-    */
+
     //////////////////////////////////// Exercice 8.17.5 ////////////////////////////////////////
     val a = Fraction(1,2) // dénomitateur à 1 par défaut
     val b = Fraction(1,3)
     println("a+b (surcharge de la méthode associée plus) : ${a+b}") // a+b retourne un objet Fraction, et appel méthode toString implicite
     println("a-b (surcharge de la méthode associée plus) : ${a-b}")
     println("a*b (surcharge de la méthode associée plus) : ${a*b}")
-    println("a/b (surcharge de la méthode associée plus) : ${-a}")
+    println("a/b (surcharge de la méthode associée plus) : ${-a}")*/
+
+    //////////////////////////////////// Exercice 8.17.6 ////////////////////////////////////////
+    val Matinfo = MaterielInformatique("PC ProDesk", "HP")
+    val CaisBois = CaisseBoisson("Cidre Breton", 30.0)
+    val cont = Conteneur(Matinfo   , 0.0)
+    cont.ajouterPoids(15.0)
+
+    print(cont)
+
+    //////////////////////////////////// Exercice 9.8.1 ////////////////////////////////////////
+
 }
