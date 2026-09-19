@@ -125,20 +125,19 @@ interface IDocument{
     val editeur: String
     val dateParution: String
 
-    fun AfficherDetail(){
-    }
+    fun afficherDetails(): String
 }
 
-open class Bibliotheque<IDocument>{
-    val catalogue = ArrayList<IDocument>()
+class Bibliotheque {
+    private val catalogue: ArrayList<IDocument> = ArrayList()
 
-    fun ajouterDocument(doc: IDocument){
+    fun ajouterDocument(doc: IDocument): Unit{
         catalogue.add(doc)
     }
 
-    fun afficherTout(){
-        for( doc in catalogue){
-            println(doc.)
+    fun afficherTout(): Unit {
+        for (doc in catalogue){
+            println(doc.afficherDetails())
         }
     }
 }
@@ -151,11 +150,11 @@ class Livre(
     val quatriemeDeCouverture: String,
     val nombreDePage: Int
     ) : IDocument {
-    override fun AfficherDetail() {
-        println("ce livre a pour titre : $titre, écrit par $auteur, éditer par $editeur et est parue en $dateParution. Voici le résumer: $quatriemeDeCouverture et il y a $nombreDePage pages")
+    override fun afficherDetails(): String {
+        return "Ce livre a pour titre : $titre, écrit par $auteur, éditer par $editeur et est parue en $dateParution. Voici le résumer: $quatriemeDeCouverture et il y a $nombreDePage pages"
     }
 }
-class photo(
+class Photo(
     override val titre: String,
     override val auteur: String,
     override val editeur: String,
@@ -164,11 +163,11 @@ class photo(
     val resolutionverticales: Int,
     val estCouleur: Boolean
     ) : IDocument{
-    override fun AfficherDetail() {
-        println("cette photo a pour titre : $titre, photographier par $auteur, éditer par $editeur et est publié en $dateParution. La photo a pour resolution horizontale : $resolutionHorizontale et resolution verticale: $resolutionverticales. en couleur: $estCouleur")
+    override fun afficherDetails(): String {
+        return "Cette photo a pour titre : $titre, photographier par $auteur, éditer par $editeur et est publié en $dateParution. La photo a pour resolution horizontale : $resolutionHorizontale et resolution verticale: $resolutionverticales. en couleur: $estCouleur"
     }
 }
-//////////////////////////////////// Exercice 9.8.1bis ////////////////////////////////////////
+//////////////////////////////////// Exercice 9.8.1 Test ////////////////////////////////////////
 /*sealed class IDocument(val titre: String, val auteur: String, val editeur: String, val dateParution: String){
     class livre(
         titre: String,
@@ -182,6 +181,40 @@ class photo(
 
     )
 }*/
+
+//////////////////////////////////// Exercice 9.8.2 ////////////////////////////////////////
+sealed class Astre(val nom: String, val type: String){
+
+    class Etoile(
+        val couleur: String,
+        val temperatureKelvin: Int,
+        nom: String, type: String,
+    ) : Astre(nom, type)
+
+    class Planete(
+        val diametreKm: Double,
+        val nombreSatellites: Int,
+        nom: String, type: String,
+    ) : Astre(nom, type)
+
+    class Comete(
+        val periodeAnnees: Double,
+        nom: String, type: String,
+    ) : Astre(nom, type)
+
+    class SatelliteNaturel(
+        val planeteHote: String,
+        nom: String, type: String,
+    ) : Astre(nom, type)
+}
+fun afficherMessage(a:Astre) {
+    when(a) {
+        is Astre.Etoile -> println("Cette étoile se nomme ${a.nom} et est de type ${a.type}. \nElle est de couleur ${a.couleur} et a une température de ${a.temperatureKelvin}")
+        is Astre.Planete -> println("Cette planete se nomme ${a.nom} et est de type ${a.type}. \nElle est de diametre ${a.diametreKm} et possede ${a.nombreSatellites} satellites naturel")
+        is Astre.Comete -> println("Cette comete se nomme ${a.nom} et est de type ${a.type}. \nElle a vécu pendant ${a.periodeAnnees}")
+        is Astre.SatelliteNaturel -> println("Ce satellite se nomme ${a.nom} et est de type ${a.type}. \nIl tourne autour de ${a.planeteHote}")
+    }
+}
 
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
@@ -306,7 +339,7 @@ fun main(){
     println("a+b (surcharge de la méthode associée plus) : ${a+b}") // a+b retourne un objet Fraction, et appel méthode toString implicite
     println("a-b (surcharge de la méthode associée plus) : ${a-b}")
     println("a*b (surcharge de la méthode associée plus) : ${a*b}")
-    println("a/b (surcharge de la méthode associée plus) : ${-a}")*/
+    println("a/b (surcharge de la méthode associée plus) : ${-a}")
 
     //////////////////////////////////// Exercice 8.17.6 ////////////////////////////////////////
     val Matinfo = MaterielInformatique("PC ProDesk", "HP")
@@ -317,5 +350,33 @@ fun main(){
     print(cont)
 
     //////////////////////////////////// Exercice 9.8.1 ////////////////////////////////////////
+    val bibliotheque = Bibliotheque()
 
+    val livre1 = Livre(
+        "Le Petit Prince",
+        "Antoine de Saint-Exupéry",
+        "Gallimard",
+        "1943",
+        "Un conte poétique et philosophique ...",
+        96
+    )
+
+    val photo1 = Photo(
+        "Coucher de soleil",
+        "Jean Dupont",
+        "Studio Lumière",
+        "2022",
+        1920,
+        1080,
+        true
+    )
+
+    bibliotheque.ajouterDocument(photo1)
+    bibliotheque.ajouterDocument(livre1)
+
+    bibliotheque.afficherTout()*/
+
+    //////////////////////////////////// Exercice 9.8.2 ////////////////////////////////////////
+    val unAstre = Astre.Planete(12742.0, 1, "Terre", "Planete")
+    afficherMessage(unAstre)
 }
