@@ -215,7 +215,19 @@ fun afficherMessage(a:Astre) {
         is Astre.SatelliteNaturel -> println("Ce satellite se nomme ${a.nom} et est de type ${a.type}. \nIl tourne autour de ${a.planeteHote}")
     }
 }
-
+//////////////////////////////////// Exercice 10.6.1 ////////////////////////////////////////
+fun String?.formaterImmatriculation(): String {
+    if(!this.isNullOrBlank()){
+        return this.trim().uppercase()
+    } else {
+        return "Problème dans le contenu"
+    }
+}
+//////////////////////////////////// Exercice 10.6.2 ////////////////////////////////////////
+class conteneur(val longueurMetres: Double, val largeurMetres: Double, val hauteurMetres: Double){}
+fun conteneur.volume(): Double{
+    return this.longueurMetres * this.largeurMetres * this.hauteurMetres
+}
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
@@ -341,7 +353,7 @@ fun main(){
     println("a*b (surcharge de la méthode associée plus) : ${a*b}")
     println("a/b (surcharge de la méthode associée plus) : ${-a}")
 
-    //////////////////////////////////// Exercice 8.17.6 ////////////////////////////////////////
+    //////////////////////////////////// Exercice 8.19.1 ////////////////////////////////////////
     val Matinfo = MaterielInformatique("PC ProDesk", "HP")
     val CaisBois = CaisseBoisson("Cidre Breton", 30.0)
     val cont = Conteneur(Matinfo   , 0.0)
@@ -374,9 +386,24 @@ fun main(){
     bibliotheque.ajouterDocument(photo1)
     bibliotheque.ajouterDocument(livre1)
 
-    bibliotheque.afficherTout()*/
+    bibliotheque.afficherTout()
 
     //////////////////////////////////// Exercice 9.8.2 ////////////////////////////////////////
     val unAstre = Astre.Planete(12742.0, 1, "Terre", "Planete")
     afficherMessage(unAstre)
+
+    //////////////////////////////////// Exercice 10.6.1 ////////////////////////////////////////
+    val mot: String? = "laboubou"
+    val mot2: String? = "la bou bou"
+    val mot3: String? = ""
+    println(mot?.formaterImmatriculation())
+    println(mot2?.formaterImmatriculation())
+    println(mot3?.formaterImmatriculation())
+
+    //////////////////////////////////// Exercice 10.6.2 ////////////////////////////////////////
+    val res = conteneur(10.0, 2.0, 2.0)
+    println(res.volume())*/
+
+    //////////////////////////////////// Exercice 10.6.3 ////////////////////////////////////////
+
 }
