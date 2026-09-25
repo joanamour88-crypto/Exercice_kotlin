@@ -1,4 +1,6 @@
 import Utils.*
+import java.time.LocalDateTime
+import javax.xml.stream.FactoryConfigurationError
 
 //////////////////////////////////// Exercice 8.17.2 /////////////////////////////////////////
 class Planete(val nom: String, val masse: Double, val rayon: Double, val distanceSoleil: Double){
@@ -228,6 +230,73 @@ class conteneur(val longueurMetres: Double, val largeurMetres: Double, val haute
 fun conteneur.volume(): Double{
     return this.longueurMetres * this.largeurMetres * this.hauteurMetres
 }
+
+//////////////////////////////////// Exercice 10.6.3 ////////////////////////////////////////
+interface CorpsCeleste{
+    val nom: String
+    val magnitude: Double
+
+}
+
+class Planete1(val distanceSoleil: Double, val dateDecouverte: String, override val nom: String, override val magnitude: Double): CorpsCeleste{}
+
+fun CorpsCeleste.estBrillant(): Boolean{
+    if(magnitude < 1.5){
+        return true
+    } else {
+        return false
+    }
+}
+
+fun Planete1.toPlaneteJson(): String{
+    return "'nom' : '$nom', 'magnitude' : $magnitude, 'distance' : $distanceSoleil, 'dateDecouverte' : '$dateDecouverte'"
+}
+
+fun Planete1.estProche(): Boolean{
+    if(distanceSoleil < 150){
+        return true
+    } else {
+        return false
+    }
+}
+
+//////////////////////////////////// Exercice 11.6.1 ////////////////////////////////////////
+object CentreControleMaritime {
+    private var nbalerte: Int = 0
+
+    fun emettreAlerte(message: String){
+        println(message)
+        nbalerte += 1
+    }
+
+    fun afficherBilan(){
+        println("Bilan : Le centre a diffusé un total de $nbalerte alerte(s)")
+    }
+}
+
+//////////////////////////////////// Exercice 11.6.2 ////////////////////////////////////////
+data class SondeSpaciale(val nom: String, val orbite: String, val autonomieMois: Int){
+    companion object{
+        fun depuisChaine(ligneConfig: String):SondeSpaciale{
+            val parties = ligneConfig.split(":")
+            return SondeSpaciale(parties[0], parties[1], parties[2].toInt())
+        }
+    }
+}
+
+//////////////////////////////////// Exercice 11.6.3 ////////////////////////////////////////
+sealed class TypeEtoile(val nom: String, val couleur: String){
+    object O : TypeEtoile("SuperGéante Bleu", "Bleu"){
+        fun decrireTemperature() = println("Caractéristique thermique : Température extrême : > 30 000°C")
+    }
+    object G : TypeEtoile("Naine Jaune", "Jaune"){
+        fun decrireTemperature() = println("Caractéristique thermique : Température modérée : ~ 5 500°C")
+    }
+    object M : TypeEtoile("Naine Rouge", "Rouge"){
+        fun decrireTemperature() = println("Caractéristique thermique : Température basse : < 3 700°C")
+    }
+}
+
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
@@ -402,8 +471,35 @@ fun main(){
 
     //////////////////////////////////// Exercice 10.6.2 ////////////////////////////////////////
     val res = conteneur(10.0, 2.0, 2.0)
-    println(res.volume())*/
+    println(res.volume())
 
     //////////////////////////////////// Exercice 10.6.3 ////////////////////////////////////////
+    val plat = Planete1(149.6, "2000-01-01T00:00", "Terre", -3.99)
+    println(plat.nom.uppercase() + " :")
+    println("brillant ? " + plat.estBrillant())
+    println("JSON : {" + plat.toPlaneteJson() + "}")
+    println("Proche du Soleil ? " + plat.estProche())
 
+    //////////////////////////////////// Exercice 11.6.1 ////////////////////////////////////////
+    CentreControleMaritime.emettreAlerte("[ALERTE N°1] TEMPÊTE DE FORCE 9 SUR LA ZONE IROISE")
+    CentreControleMaritime.emettreAlerte("[ALERTE N°2] BROUILLARD DENSE DANS L'ESTUAIRE")
+    CentreControleMaritime.afficherBilan()
+
+    //////////////////////////////////// Exercice 11.6.2 ////////////////////////////////////////
+    val config = "Voyager 1:Héliocentrique:600"
+    val sonde = SondeSpaciale.depuisChaine(config)
+    println("Sonde initialisée avec succès : " + sonde)
+    println("Nom  : " + sonde.nom + " | Orbite : " + sonde.orbite + " | Autonomie : " + sonde.autonomieMois + " mois")*/
+
+    //////////////////////////////////// Exercice 11.6.3 ////////////////////////////////////////
+    val etoileObservee: TypeEtoile = TypeEtoile.M
+    println("Classification : ${etoileObservee.nom}")
+    println("Couleur dominante : ${etoileObservee.couleur}")
+    print("Caractéristique thermique : ")
+    // Grâce au mot-clé "sealed", le "when" est exhaustif et n'a pas besoin de "else"
+    when (etoileObservee) {
+        is TypeEtoile.O -> etoileObservee.decrireTemperature()
+        is TypeEtoile.G -> etoileObservee.decrireTemperature()
+        is TypeEtoile.M -> etoileObservee.decrireTemperature()
+    }
 }
