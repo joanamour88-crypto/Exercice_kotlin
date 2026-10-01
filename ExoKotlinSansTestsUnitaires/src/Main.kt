@@ -296,6 +296,18 @@ sealed class TypeEtoile(val nom: String, val couleur: String){
         fun decrireTemperature() = println("Caractéristique thermique : Température basse : < 3 700°C")
     }
 }
+//////////////////////////////////// Exercice 13.6.3 ////////////////////////////////////////
+fun calculer(x: Double, f: (Double) -> Double): Double {
+    return f(x)
+}
+
+//////////////////////////////////// Exercice 13.6.4 ////////////////////////////////////////
+fun repeter(fois: Int, action: (Int) -> Unit){
+    for(i in 1 .. fois)
+        action(i)
+}
+
+//////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
 
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
@@ -489,7 +501,7 @@ fun main(){
     val config = "Voyager 1:Héliocentrique:600"
     val sonde = SondeSpaciale.depuisChaine(config)
     println("Sonde initialisée avec succès : " + sonde)
-    println("Nom  : " + sonde.nom + " | Orbite : " + sonde.orbite + " | Autonomie : " + sonde.autonomieMois + " mois")*/
+    println("Nom  : " + sonde.nom + " | Orbite : " + sonde.orbite + " | Autonomie : " + sonde.autonomieMois + " mois")
 
     //////////////////////////////////// Exercice 11.6.3 ////////////////////////////////////////
     val etoileObservee: TypeEtoile = TypeEtoile.M
@@ -502,4 +514,39 @@ fun main(){
         is TypeEtoile.G -> etoileObservee.decrireTemperature()
         is TypeEtoile.M -> etoileObservee.decrireTemperature()
     }
+
+    //////////////////////////////////// Exercice 13.6.1 ////////////////////////////////////////
+    // 1. Une lambda qui prend un Int et retourne son double
+    val doubler: (Int) -> Int = { x -> x * 2 }
+    println(doubler(5))     // attendu : 10
+
+    // 2. Une lambda qui prend deux Int et retourne leur somme
+    // TODO : écrire la lambda ici
+    val additionner: (Int, Int) -> Int = { x: Int, y: Int -> x + y }
+    println(additionner(3, 4)) // attendu : 7
+
+    // 3. Une lambda sans paramètre qui retourne "Bonjour"
+    // TODO : écrire la lambda ici
+    val saluer = {"Bonjour"}
+    println(saluer())      // attendu : Bonjour
+
+    //////////////////////////////////// Exercice 13.6.2 ////////////////////////////////////////
+
+
+
+
+    //////////////////////////////////// Exercice 13.6.3 ////////////////////////////////////////
+    println(calculer(3.5) {x -> x * x})
+    println(calculer(2.0) {x -> x * x * x})
+    println(calculer(4.0) {x -> 1/x})
+    println(calculer(7.2) {x -> -x})
+    println(calculer(-6.5) {x -> Math.abs(x)})
+    println(calculer(-6.5) {x -> if (x < 0.0) x * -1 else x })*/
+
+    //////////////////////////////////// Exercice 13.6.4 ////////////////////////////////////////
+    println(repeter(5) {i -> println("Tour n°$i") })
+
+    //////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
+
+
 }
