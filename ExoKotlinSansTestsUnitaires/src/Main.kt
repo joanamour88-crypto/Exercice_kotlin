@@ -308,7 +308,11 @@ fun repeter(fois: Int, action: (Int) -> Unit){
 }
 
 //////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
+fun integrer(a: Double, b: Double, n: Int, f: (Double) -> Double){
+    for(i in 1..n){
 
+    }
+}
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
