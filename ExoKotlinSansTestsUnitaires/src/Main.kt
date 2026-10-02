@@ -1,6 +1,8 @@
 import Utils.*
 import java.time.LocalDateTime
 import javax.xml.stream.FactoryConfigurationError
+import kotlin.math.pow
+import kotlin.math.round
 
 //////////////////////////////////// Exercice 8.17.2 /////////////////////////////////////////
 class Planete(val nom: String, val masse: Double, val rayon: Double, val distanceSoleil: Double){
@@ -296,23 +298,41 @@ sealed class TypeEtoile(val nom: String, val couleur: String){
         fun decrireTemperature() = println("Caractéristique thermique : Température basse : < 3 700°C")
     }
 }
-//////////////////////////////////// Exercice 13.6.3 ////////////////////////////////////////
+//////////////////////////////////// Exercice 13.6.1 ////////////////////////////////////////
 fun calculer(x: Double, f: (Double) -> Double): Double {
     return f(x)
 }
 
-//////////////////////////////////// Exercice 13.6.4 ////////////////////////////////////////
+//////////////////////////////////// Exercice 13.6.3 ////////////////////////////////////////
 fun repeter(fois: Int, action: (Int) -> Unit){
     for(i in 1 .. fois)
         action(i)
 }
 
-//////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
-fun integrer(a: Double, b: Double, n: Int, f: (Double) -> Double){
+//////////////////////////////////// Exercice 13.6.4 ////////////////////////////////////////
+fun integrer(a: Double, b: Double, n: Int, f: (Double) -> Double): Double{
+    var somme: Double = 0.0
     for(i in 1..n){
-
+        val x = a + (i - 0.5) * (b - a) / n
+        somme += f(x)
     }
+    return (b - a) / n  * somme
 }
+
+//////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
+fun calculerVan(flux_futur: Double, taux: Double, annees: Int, VANMarge_secu: (Double) -> Double): Double{
+    return VANMarge_secu((flux_futur) / (1+taux).pow(annees))
+}
+
+//////////////////////////////////// Exercice 13.6.6 ////////////////////////////////////////
+fun appliquerDeuxFois(x: Double, f: (Double) -> Double): Double{
+    return f(f(x))
+}
+
+fun composer(x: Double, f: (Double) -> Double, g: (Double) -> Double): Double{
+    return g(f(x))
+}
+
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
@@ -535,22 +555,30 @@ fun main(){
     println(saluer())      // attendu : Bonjour
 
     //////////////////////////////////// Exercice 13.6.2 ////////////////////////////////////////
-
-
-
-
-    //////////////////////////////////// Exercice 13.6.3 ////////////////////////////////////////
     println(calculer(3.5) {x -> x * x})
     println(calculer(2.0) {x -> x * x * x})
     println(calculer(4.0) {x -> 1/x})
     println(calculer(7.2) {x -> -x})
     println(calculer(-6.5) {x -> Math.abs(x)})
-    println(calculer(-6.5) {x -> if (x < 0.0) x * -1 else x })*/
+    println(calculer(-6.5) {x -> if (x < 0.0) x * -1 else x })
 
-    //////////////////////////////////// Exercice 13.6.4 ////////////////////////////////////////
+    //////////////////////////////////// Exercice 13.6.3 ////////////////////////////////////////
     println(repeter(5) {i -> println("Tour n°$i") })
 
+    //////////////////////////////////// Exercice 13.6.4 ////////////////////////////////////////
+    val integrer: Double = integrer(0.0, 1.0, 1) {x -> x}
+    val integrer2: Double = integrer(0.0, 1.0, 1000) {x -> x * x}
+    println("Intégrale de x sur [0,1] : $integrer")
+    println("Intégrale de x2 sur [0,1] : $integrer2")*/
+
     //////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
+    println("VAN brute, sans transformation : " + calculerVan(1000.0, 0.07, 10) { x -> x })
+    println("VAN avec marge de sécurité de 5% : " + calculerVan(1000.0, 0.07, 10) { x -> x * 0.95})
+    println("VAN  brute arrondie à l'entier le plus proche : " + round(calculerVan(1000.0, 0.07, 10) { x -> x}))
+    println("VAN brute, estimée en Dollars (1EUR=1.08 USD), avec risque de change de 2% : " + 1.08 *calculerVan(1000.0, 0.07, 10) { x -> x * 0.98})
 
-
+    //////////////////////////////////// Exercice 13.6.6 ////////////////////////////////////////
+    println("f(f(5)) avec f(x)=x+10 :" + appliquerDeuxFois(5.0) { x -> x + 10 })
+    println("f(f(3)) avec f(x)=x*2 :" + appliquerDeuxFois(3.0) { x -> x * 2 })
+    println("h(4) =" + composer(4.0, { x -> x + 1 }, {x -> x * 2}))
 }
