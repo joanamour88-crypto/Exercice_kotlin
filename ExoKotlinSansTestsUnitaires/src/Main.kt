@@ -333,6 +333,57 @@ fun composer(x: Double, f: (Double) -> Double, g: (Double) -> Double): Double{
     return g(f(x))
 }
 
+//////////////////////////////////// Exercice 14.9.1 ////////////////////////////////////////
+
+fun transformer(list : List<Int>, Operation: (Int) -> Int): List<Int>{
+    var NewList: List<Int> = listOf()
+    for (nombre in list) {
+        NewList += Operation(nombre)
+    }
+    return NewList
+}
+
+//////////////////////////////////// Exercice 14.9.2 ////////////////////////////////////////
+
+fun List<Int>.transformer2( Operation: (Int) -> Int): List<Int>{
+    var NewList: List<Int> = listOf()
+    for (nombre in this) {
+        NewList += Operation(nombre)
+    }
+    return NewList
+}
+//-----↓ deuxieme méthode ↓-----//
+fun List<Int>.transformer21(Operation: (Int) -> Int) = this.map{Operation(it)}
+
+//////////////////////////////////// Exercice 14.9.3 ////////////////////////////////////////
+
+data class Observation(
+    val objet: String,
+    val temperatureK: Int,
+    val typeSpectral: String,
+    val estValide: Boolean
+)
+
+val fluxDonnees = listOf(
+    Observation("Etoile-A", 5500, "G", true),
+    Observation("Etoile-B", 3000, "M", false), // Donnée invalide
+    Observation("Etoile-C", 12000, "B", true),
+    Observation("Etoile-D", 4500, "K", true),
+    Observation("Etoile-E", 25000, "O", true)
+)
+
+//////////////////////////////////// Exercice 14.9.4 ////////////////////////////////////////
+
+data class Livre1(val titre: String, val estEmprunte: Boolean)
+
+
+val bibliotheque = listOf(
+    Livre1("Le Petit Prince", true),
+    Livre1("1984", false),
+    Livre1("La guerre des mouches", true),
+    Livre1("Fondation", false)
+)
+
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
@@ -569,7 +620,7 @@ fun main(){
     val integrer: Double = integrer(0.0, 1.0, 1) {x -> x}
     val integrer2: Double = integrer(0.0, 1.0, 1000) {x -> x * x}
     println("Intégrale de x sur [0,1] : $integrer")
-    println("Intégrale de x2 sur [0,1] : $integrer2")*/
+    println("Intégrale de x2 sur [0,1] : $integrer2")
 
     //////////////////////////////////// Exercice 13.6.5 ////////////////////////////////////////
     println("VAN brute, sans transformation : " + calculerVan(1000.0, 0.07, 10) { x -> x })
@@ -581,4 +632,35 @@ fun main(){
     println("f(f(5)) avec f(x)=x+10 :" + appliquerDeuxFois(5.0) { x -> x + 10 })
     println("f(f(3)) avec f(x)=x*2 :" + appliquerDeuxFois(3.0) { x -> x * 2 })
     println("h(4) =" + composer(4.0, { x -> x + 1 }, {x -> x * 2}))
+
+    //////////////////////////////////// Exercice 14.9.1 ////////////////////////////////////////
+    val list: List<Int> = listOf(1,2,3,4)
+    println("Voici la premiere liste : " + list + "\nVoici la nouvelle liste : " + transformer(list) {x -> x + x} )
+
+    //////////////////////////////////// Exercice 14.9.2 ////////////////////////////////////////
+
+    println("Voici la premiere liste : " + list + "\nVoici la nouvelle liste : " + list.transformer2 {x -> x + x} )
+    println("Voici la premiere liste : " + list + "\nVoici la nouvelle liste : " + list.transformer21 {x -> x + x} )
+
+    //////////////////////////////////// Exercice 14.9.3 ////////////////////////////////////////
+
+    val tri = fluxDonnees.filter{ it.temperatureK > 5000}
+    println(tri)
+    println("Analyse standard : " + tri[0].objet + "(" + tri[0].typeSpectral + ") en cours." )
+    println("Priorité Haute : " + tri[1].objet + "(" + tri[1].typeSpectral + ") détectée." )
+    println("Priorité Haute : " + tri[2].objet + "(" + tri[2].typeSpectral + ") détectée." )
+
+    //////////////////////////////////// Exercice 14.9.4 ////////////////////////////////////////
+
+    val emprunter = bibliotheque.sortedBy{it.titre.length}
+
+    val livre = bibliotheque.filter{it.estEmprunte == true}
+    livre.forEach{println(it.titre)}
+
+    println(emprunter)*/
+
+    //////////////////////////////////// Exercice 14.9.5 ////////////////////////////////////////
+
+    val indices = (0..4)
+    indices.forEach {x -> println(1 / Math.pow(x.toDouble(), 2.0))}
 }
