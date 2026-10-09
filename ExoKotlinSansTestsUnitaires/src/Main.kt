@@ -1,6 +1,8 @@
 import Utils.*
 import java.time.LocalDateTime
+import javax.swing.JSeparator
 import javax.xml.stream.FactoryConfigurationError
+import kotlin.compareTo
 import kotlin.math.pow
 import kotlin.math.round
 
@@ -384,6 +386,62 @@ val bibliotheque = listOf(
     Livre1("Fondation", false)
 )
 
+//////////////////////////////////// Exercice 14.9.6 ////////////////////////////////////////
+
+data class Exoplanete(val nom: String, val distanceAl: Int, val estHabitable: Boolean)
+
+
+val catalogue = listOf(
+    Exoplanete("Proxima Centauri b", 4, true),
+    Exoplanete("Kepler-452b", 1400, true),
+    Exoplanete("WASP-17b", 1300, false),
+    Exoplanete("TRAPPIST-1e", 39, true),
+    Exoplanete("HD 189733b", 64, false)
+)
+
+//////////////////////////////////// Exercice 14.9.7 ////////////////////////////////////////
+
+data class CorpsCeleste2(val nom: String, val distanceUA: Double)
+
+val catalogueSpatial = listOf(
+    CorpsCeleste2("Mercure", 0.39),
+    CorpsCeleste2("Venus", 0.72),
+    CorpsCeleste2("Terre", 1.0),
+    CorpsCeleste2("Mars", 1.52),
+    CorpsCeleste2("Jupiter", 5.2),
+    CorpsCeleste2("Saturne", 9.5),
+    CorpsCeleste2("Uranus", 19.2),
+    CorpsCeleste2("Neptune", 30.1),
+    CorpsCeleste2("Pluton", 39.5),
+    CorpsCeleste2("Eris", 67.7),
+    CorpsCeleste2("Sedna", 480.0)
+)
+
+const val UA_EN_MILLIONS_KM = 149.6
+
+//////////////////////////////////// Exercice 14.9.8 ////////////////////////////////////////
+
+data class Candidat(val nom: String, val prenom: String, val moygen: Double, val pro: Double)
+val lesCandidats = listOf(
+    Candidat("Dupont", "Pierre", 11.0, 12.0), // OK, moyenne générale : 11, pro : 12
+    Candidat("Durant", "Jean", 8.5, 11.0), // rattrapage OK
+    Candidat("Jaouen", "Yann", 7.0, 8.0), // recalé
+    Candidat("Le Flem", "Paul", 7.5, 15.0), // recalé
+    Candidat("Ropartz", "Guy", 15.0, 17.0), // OK
+    Candidat("Cras", "Jean", 9.0, 14.0), // rattrapage OK
+    Candidat("Ravel", "Marcel", 9.5, 10.0), // recalé, moyenne<10
+)
+/*fun List<Candidat>.getListCandidatsRepeches():List<Candidat>{
+    val candidatrepech: List<Candidat> = (this.filter{8< it.moygen && it.moygen < 10 &&  10< it.pro && it.pro <= 20 })
+    return  candidatrepech
+}*/
+///this.filter{8< it.moygen && it.moygen < 10 &&  10< it.pro && it.pro <= 20 }.forEach { println("${it.nom}, ${it.moygen} - ${it.pro}")
+
+fun List<Candidat>.getListCandidatsRepeches() = lesCandidats
+        .filter {8 < it.moygen && it.moygen < 10 && it.pro > 10}
+        .map {it.nom + " " + it.prenom + ", " + it.moygen + " - " + it.pro + "\n" }
+        .joinToString(separator = "")
+
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
     /*val pseudo: String? = null
@@ -657,10 +715,23 @@ fun main(){
     val livre = bibliotheque.filter{it.estEmprunte == true}
     livre.forEach{println(it.titre)}
 
-    println(emprunter)*/
+    println(emprunter)
 
     //////////////////////////////////// Exercice 14.9.5 ////////////////////////////////////////
 
     val indices = (0..4)
-    indices.forEach {x -> println(1 / Math.pow(x.toDouble(), 2.0))}
+    indices.forEach {x -> println(1 / Math.pow(2.0, x.toDouble()))}
+
+    //////////////////////////////////// Exercice 14.9.6 ////////////////////////////////////////
+
+    //catalogue.filter{it.estHabitable}.forEach{println("Catalogue des mondes habitables :"+it.nom+"("+it.distanceAl+" Al)")}
+    val cat = catalogue.filter{it.estHabitable}.sortedBy{it.distanceAl}.map{it.nom + " (" + it.distanceAl + " Al)"}.joinToString(separator = " / ", prefix = " Catalogue des mondes habitables : ", postfix = ".")
+    println(cat)
+
+    //////////////////////////////////// Exercice 14.9.7 ////////////////////////////////////////
+
+    catalogueSpatial.filter{it.distanceUA>30.0}.forEach{println("Objet lointain : ${it.nom} à ${(it.distanceUA * UA_EN_MILLIONS_KM).toInt()} millions de km.")}*/
+
+    //////////////////////////////////// Exercice 14.9.8 ////////////////////////////////////////
+    println("Liste des candidats repéchés :\n${lesCandidats.getListCandidatsRepeches()}")
 }
