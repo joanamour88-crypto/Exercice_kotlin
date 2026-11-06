@@ -239,13 +239,13 @@ fun conteneur.volume(): Double{
 interface CorpsCeleste{
     val nom: String
     val magnitude: Double
-
 }
 
 class Planete1(val distanceSoleil: Double, val dateDecouverte: String, override val nom: String, override val magnitude: Double): CorpsCeleste{}
 
 fun CorpsCeleste.estBrillant(): Boolean{
     if(magnitude < 1.5){
+
         return true
     } else {
         return false
@@ -441,6 +441,16 @@ fun List<Candidat>.getListCandidatsRepeches() = lesCandidats
         .filter {8 < it.moygen && it.moygen < 10 && it.pro > 10}
         .map {it.nom + " " + it.prenom + ", " + it.moygen + " - " + it.pro + "\n" }
         .joinToString(separator = "")
+
+//////////////////////////////////// Exercice 15.5.1 ////////////////////////////////////////
+/*
+val puissance = sequence {
+    var nb = 1
+    yield(1)
+    while(true) {
+        yield(nb * 2)
+    }
+}*/
 
 fun main(){
     //////////////////////////////////// Exercice 3.14.2 ////////////////////////////////////////
@@ -730,8 +740,50 @@ fun main(){
 
     //////////////////////////////////// Exercice 14.9.7 ////////////////////////////////////////
 
-    catalogueSpatial.filter{it.distanceUA>30.0}.forEach{println("Objet lointain : ${it.nom} à ${(it.distanceUA * UA_EN_MILLIONS_KM).toInt()} millions de km.")}*/
+    catalogueSpatial.filter{it.distanceUA>30.0}.forEach{println("Objet lointain : ${it.nom} à ${(it.distanceUA * UA_EN_MILLIONS_KM).toInt()} millions de km.")}
 
     //////////////////////////////////// Exercice 14.9.8 ////////////////////////////////////////
     println("Liste des candidats repéchés :\n${lesCandidats.getListCandidatsRepeches()}")
+
+    //////////////////////////////////// Exercice 15.5.1 ////////////////////////////////////////
+    val puissance = sequence {
+        var nb = 1
+        yield(1)
+        while(true) {
+            yield(nb * 2)
+            nb *= 2
+        }
+    }
+
+    /*println("Les 10 premières puissances de 2 : " )
+    puissance.take(10).forEach{print("${it}, ")}*/
+   val rep = puissance.take(10).joinToString(
+        ", ",
+        "Les 10 premières puissances de 2 : ",
+        "."
+    )
+    println(rep)
+
+    //////////////////////////////////// Exercice 15.5.2 ////////////////////////////////////////
+
+    val syracuse = sequence {
+        var entier = 12
+        yield(entier)
+        while (true) {
+            if(entier > 0) {
+                if (entier % 2 == 0) {
+                    entier = entier / 2
+                    yield(entier)
+                } else if (entier == 1){
+                    break
+                } else {
+                    entier = (entier * 3) + 1
+                    yield(entier)
+                }
+            }
+        }
+    }
+
+    println("Calcul de la suite de Syracuse pour u0 = ${syracuse.first()} :")
+    syracuse.forEach{print("${it} ")}*/8
 }
